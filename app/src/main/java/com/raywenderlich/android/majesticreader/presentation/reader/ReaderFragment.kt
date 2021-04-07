@@ -37,12 +37,13 @@ import android.graphics.Point
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.pdf.PdfRenderer
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.raywenderlich.android.majesticreader.R
-import com.raywenderlich.android.majesticreader.Document
+import com.raywenderlich.android.majesticreader.domain.Document
 import com.raywenderlich.android.majesticreader.framework.MajesticViewModelFactory
 import com.raywenderlich.android.majesticreader.presentation.IntentUtil
 import com.raywenderlich.android.majesticreader.presentation.library.LibraryFragment
@@ -74,30 +75,30 @@ class ReaderFragment : Fragment() {
     viewModel = ViewModelProviders.of(this, MajesticViewModelFactory)
         .get(ReaderViewModel::class.java)
 
-    viewModel.document.observe(this, Observer {
+    viewModel.document.observe(viewLifecycleOwner, {
       if (it == Document.EMPTY) {
         // Show file picker action.
         startActivityForResult(IntentUtil.createOpenIntent(), LibraryFragment.READ_REQUEST_CODE)
       }
     })
 
-    viewModel.bookmarks.observe(this, Observer {
+    viewModel.bookmarks.observe(viewLifecycleOwner, {
       adapter.update(it)
     })
 
-    viewModel.isBookmarked.observe(this, Observer {
+    viewModel.isBookmarked.observe(viewLifecycleOwner, {
       val bookmarkDrawable = if (it) R.drawable.ic_bookmark else R.drawable.ic_bookmark_border
       tabBookmark.setCompoundDrawablesWithIntrinsicBounds(0, bookmarkDrawable, 0, 0)
     })
 
-    viewModel.isInLibrary.observe(this, Observer {
+    viewModel.isInLibrary.observe(viewLifecycleOwner, {
       val libraryDrawable = if(it) R.drawable.ic_library else R.drawable.ic_library_border
       tabLibrary.setCompoundDrawablesRelativeWithIntrinsicBounds(0, libraryDrawable, 0, 0)
     })
 
-    viewModel.currentPage.observe(this, Observer { showPage(it) })
-    viewModel.hasNextPage.observe(this, Observer { tabNextPage.isEnabled = it })
-    viewModel.hasPreviousPage.observe(this, Observer { tabPreviousPage.isEnabled = it })
+    viewModel.currentPage.observe(viewLifecycleOwner, { showPage(it) })
+    viewModel.hasNextPage.observe(viewLifecycleOwner, { tabNextPage.isEnabled = it })
+    viewModel.hasPreviousPage.observe(viewLifecycleOwner, { tabPreviousPage.isEnabled = it })
     
     if(savedInstanceState == null) {
       viewModel.loadArguments(arguments)

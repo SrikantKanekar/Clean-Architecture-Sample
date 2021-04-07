@@ -28,7 +28,7 @@
  * THE SOFTWARE.
  */
 
-package com.raywenderlich.android.majesticreader
+package com.raywenderlich.android.majesticreader.domain
 
 import java.io.Serializable
 
@@ -38,6 +38,7 @@ data class Document(
     val size: Int,
     val thumbnail: String
 ): Serializable {
+
   companion object {
     val EMPTY = Document("", "", 0, "")
   }
