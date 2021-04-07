@@ -46,6 +46,7 @@ import com.raywenderlich.android.majesticreader.framework.MajesticViewModelFacto
 import com.raywenderlich.android.majesticreader.presentation.IntentUtil.createOpenIntent
 import com.raywenderlich.android.majesticreader.presentation.MainActivityDelegate
 import kotlinx.android.synthetic.main.fragment_library.*
+import java.lang.ClassCastException
 
 class LibraryFragment : Fragment() {
 
@@ -70,7 +71,7 @@ class LibraryFragment : Fragment() {
   }
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                            savedInstanceState: Bundle?): View? {
+      savedInstanceState: Bundle?): View? {
     return inflater.inflate(R.layout.fragment_library, container, false)
   }
 
@@ -83,7 +84,7 @@ class LibraryFragment : Fragment() {
 
     viewModel = ViewModelProviders.of(this, MajesticViewModelFactory)
         .get(LibraryViewModel::class.java)
-    viewModel.documents.observe(viewLifecycleOwner, Observer { adapter.update(it) })
+    viewModel.documents.observe(viewLifecycleOwner, { adapter.update(it) })
     viewModel.loadDocuments()
 
     fab.setOnClickListener { startActivityForResult(createOpenIntent(), READ_REQUEST_CODE) }

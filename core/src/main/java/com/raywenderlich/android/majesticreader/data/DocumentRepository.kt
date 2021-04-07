@@ -4,15 +4,15 @@ import com.raywenderlich.android.majesticreader.domain.Document
 
 class DocumentRepository(
     private val documentDataSource: DocumentDataSource,
-    private val openDocumentDataSource: OpenDocumentDataSource
-) {
-    suspend fun addDocument(document: Document) = documentDataSource.add(document)
+    private val openDocumentDataSource: OpenDocumentDataSource) {
 
-    suspend fun getDocuments() = documentDataSource.readAll()
+  suspend fun addDocument(document: Document) = documentDataSource.add(document)
 
-    suspend fun removeDocument(document: Document) = documentDataSource.remove(document)
+  suspend fun getDocuments() = documentDataSource.readAll()
 
-    fun setOpenDocument(document: Document) = openDocumentDataSource.setOpenDocument(document)
+  suspend fun removeDocument(document: Document) = documentDataSource.remove(document)
 
-    fun getOpenDocument() = openDocumentDataSource.getOpenDocument()
+  fun setOpenDocument(document: Document) = openDocumentDataSource.setOpenDocument(document)
+
+  fun getOpenDocument() = openDocumentDataSource.getOpenDocument()
 }
